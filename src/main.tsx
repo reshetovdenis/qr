@@ -54,7 +54,7 @@ function ScannerDialog({ close, translate }: { close: () => void; translate: (ke
           window.location.assign(match.url);
         } else {
           stop();
-          setResult(match.kind);
+          setResult(match.kind === 'not-url' ? 'not-url' : 'other');
           setMessage(match.kind === 'other' ? 'This is not Slonig' : 'This is not a web link');
         }
       }, { preferredCamera: camera, returnDetailedScanResult: true, maxScansPerSecond: 8 });
