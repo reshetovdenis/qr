@@ -40,3 +40,14 @@ pnpm test
 URL matching tests run without downloading packages using `node --test tests/*.test.mjs`.
 
 Note: Browser camera access must be tested on a real device and the complete build requires installing pnpm dependencies.
+
+## Docker
+
+Build and run the production web app:
+
+```sh
+docker build -t slonig-qr .
+docker run --rm -p 8080:80 slonig-qr
+```
+
+Open http://localhost:8080 on the same machine. Camera scanning requires a secure context: `localhost` works for local development, but use HTTPS (usually via a TLS-terminating reverse proxy) when accessing the site from another device.
