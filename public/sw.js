@@ -1,0 +1,5 @@
+/* Cache the app shell after the first visit; never cache outside Slonig Scanner's scope. */
+const CACHE = 'slonig-qr-react-v3';
+self.addEventListener('install', event => {event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(['./','./index.html','./manifest.webmanifest','./icon.svg','./locales/en/translation.json'])));self.skipWaiting();});
+self.addEventListener('activate', event => {event.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))),self.clients.claim()]));});
+self.addEventListener('fetch', event => {if(event.request.method!=='GET'||new URL(event.request.url).origin!==self.location.origin)return;event.respondWith(fetch(event.request).then(response=>{if(response.ok){const copy=response.clone();void caches.open(CACHE).then(c=>c.put(event.request,copy));}return response;}).catch(()=>caches.match(event.request).then(found=>found || (event.request.mode==='navigate' ? caches.match('./index.html') : Response.error()))));});
