@@ -7,6 +7,7 @@
   "Camera not found.": "Camera not found.",
   "Check the link before you open it.": "Check the link before you open it.",
   "Choose a camera": "Choose a camera",
+  "Close": "Close",
   "Copied text!": "Copied text!",
   "Copy link": "Copy link",
   "Copy text": "Copy text",
@@ -28,6 +29,5 @@
   "This QR code has no web link.": "This QR code has no web link.",
   "Try again": "Try again",
   "Use the camera to scan again.": "Use the camera to scan again.",
-  "Web link": "Web link",
-  "Close": "Close"
+  "Web link": "Web link"
 }

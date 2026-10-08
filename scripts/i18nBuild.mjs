@@ -15,8 +15,10 @@ if(fs.existsSync(envFile)) for(const line of fs.readFileSync(envFile,'utf8').spl
 const localesRoot=path.join(root,'public','locales');
 const langs=JSON.parse(fs.readFileSync(path.join(localesRoot,'index.json'),'utf8'));
 const keys=new Set();
-for(const name of ['src/main.ts','src/i18n.ts']) {
- const source=fs.readFileSync(path.join(root,name),'utf8');
+for(const name of ['src/main.tsx','src/i18n.ts']) {
+ const file=path.join(root,name);
+ if(!fs.existsSync(file))continue;
+ const source=fs.readFileSync(file,'utf8');
  for(const match of source.matchAll(/(?<![A-Za-z0-9_\/])t\(\s*['"]([^'"]+)['"]/g))keys.add(match[1]);
 }
 const fallback=JSON.parse(fs.readFileSync(path.join(localesRoot,'en','translation.json'),'utf8'));
@@ -39,7 +41,7 @@ for(const lang of langs.filter(l=>l!=='en')) {
   const part=missing.slice(i,i+batch);
   const response=await fetch('https://api.openai.com/v1/chat/completions',{
    method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${apiKey}`},
-   body:JSON.stringify({model,temperature:0.2,response_format:{type:'json_object'},messages:[
+   body:JSON.stringify({model,response_format:{type:'json_object'},messages:[
     {role:'system',content:`Translate beginner-friendly QR scanner UI text into ${lang}. Slonig is an app for face-to-face peer learning in classrooms. Slonig is a product name: do not translate it. Use easy, short phrases that kindergarten-level children can understand when read aloud. Keep the same meaning, preserve punctuation when natural. Reply with one JSON object mapping each EXACT English key to its translation; include every key. No markdown.`},
     {role:'user',content:JSON.stringify(part)}]})
   });
